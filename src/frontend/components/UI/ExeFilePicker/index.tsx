@@ -29,7 +29,7 @@ export default function ExeFilePicker() {
     useContext(ContextProvider)
   const { t } = useTranslation()
   const {
-    exeRunDialog: { open, exePath, flatpakInaccessible }
+    exeRunDialog: { open, target, isUri, flatpakInaccessible }
   } = useGlobalState.keys('exeRunDialog')
 
   const allGames = useMemo(
@@ -82,13 +82,13 @@ export default function ExeFilePicker() {
 
   const handlePick = useCallback(
     async (appName: string, runner: Runner) => {
-      if (!exePath) return
+      if (!target) return
       setRunning(true)
       return window.api.exe_handler
-        .launchWithExeFile(exePath, appName, runner)
+        .launchWithExeFile(target, appName, runner, isUri)
         .then(handleClose)
     },
-    [exePath, handleClose]
+    [target, isUri, handleClose]
   )
 
   const warning = useMemo(() => {
@@ -108,7 +108,9 @@ export default function ExeFilePicker() {
       {open && (
         <Dialog onClose={handleClose} showCloseButton>
           <DialogHeader onClose={handleClose}>
-            {t('exeFilePicker.title', 'Open EXE')}
+            {isUri
+              ? t('exeFilePicker.titleUri', 'Open URI')
+              : t('exeFilePicker.title', 'Open EXE')}
           </DialogHeader>
           <DialogContent>
             <Box
@@ -125,12 +127,19 @@ export default function ExeFilePicker() {
                     variant={'subtitle2'}
                     sx={{ color: 'var(--text-secondary)' }}
                   >
-                    {t(
-                      'exeFilePicker.description',
-                      'You have opened an executable file with ' +
-                        'Heroic. Please select the game you wish to run this ' +
-                        'EXE file on.'
-                    )}
+                    {isUri
+                      ? t(
+                          'exeFilePicker.descriptionUri',
+                          'You have opened a URI with ' +
+                            'Heroic. Please select the game whose Wine ' +
+                            'prefix you wish to open this URI in.'
+                        )
+                      : t(
+                          'exeFilePicker.description',
+                          'You have opened an executable file with ' +
+                            'Heroic. Please select the game you wish to run this ' +
+                            'file on.'
+                        )}
                   </Typography>
                   {warning && (
                     <Box
@@ -224,7 +233,9 @@ export default function ExeFilePicker() {
                     />
                     <Typography>
                       {running
-                        ? t('exeFilePicker.running', 'Running executable...')
+                        ? isUri
+                          ? t('exeFilePicker.runningUri', 'Opening URI...')
+                          : t('exeFilePicker.running', 'Running executable...')
                         : t('exeFilePicker.loading', 'Loading game list...')}
                     </Typography>
                   </Box>

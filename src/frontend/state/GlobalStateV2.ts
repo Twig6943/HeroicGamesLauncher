@@ -40,8 +40,18 @@ interface GlobalStateV2 {
   setGameOverrides: (overrides: Record<string, GameOverride>) => void
 
   exeRunDialog:
-    | { open: true; exePath: string; flatpakInaccessible: boolean }
-    | { open: false; exePath?: undefined; flatpakInaccessible?: undefined }
+    | {
+        open: true
+        target: string
+        isUri: boolean
+        flatpakInaccessible: boolean
+      }
+    | {
+        open: false
+        target?: undefined
+        isUri?: undefined
+        flatpakInaccessible?: undefined
+      }
 }
 
 const useGlobalStateRaw = create<GlobalStateV2>()((set) => ({
@@ -144,9 +154,9 @@ const useGlobalStateKeys = <Keys extends (keyof GlobalStateV2)[]>(
   )
 
 window.api.exe_handler.handleShowExeFilePicker(
-  (_e, exePath, flatpakInaccessible) =>
+  (_e, target, flatpakInaccessible, isUri) =>
     useGlobalStateRaw.setState({
-      exeRunDialog: { open: true, exePath, flatpakInaccessible }
+      exeRunDialog: { open: true, target, isUri, flatpakInaccessible }
     })
 )
 

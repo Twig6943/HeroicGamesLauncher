@@ -418,11 +418,14 @@
     "error": "Error",
     "exeFilePicker": {
         "description": "You have opened an executable file with Heroic. Please select the game you wish to run this EXE file on.",
+        "descriptionUri": "You have opened a URI with Heroic. Please select the game whose Wine prefix you wish to open this URI in.",
         "flatpakWarning": "The selected executable is not accessible to Heroic. If you run this executable, it will not see any other files in its containing folder. To fix this, move the executable into an accessible location (e.g. ~/Games/Heroic).",
         "loading": "Loading game list...",
         "running": "Running executable...",
+        "runningUri": "Opening uri...",
         "search": "Search games...",
-        "title": "Open EXE"
+        "title": "Open EXE",
+        "titleUri": "Open URI"
     },
     "externalLink": {
         "dontAskAgain": "Don't ask again",
