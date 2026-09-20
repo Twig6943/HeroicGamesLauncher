@@ -871,7 +871,13 @@ function getVkd3dUrl(): string {
 export async function runWineCommandOnGame(
   runner: Runner,
   appName: string,
-  { commandParts, wait = false, protonVerb, startFolder }: WineCommandArgs
+  {
+    commandParts,
+    wait = false,
+    protonVerb,
+    startFolder,
+    options
+  }: WineCommandArgs
 ): Promise<ExecResult> {
   const game = libraryManagerMap[runner].getGame(appName)
   if (game.isNative()) {
@@ -888,6 +894,7 @@ export async function runWineCommandOnGame(
     commandParts,
     wait,
     protonVerb,
-    startFolder
+    startFolder,
+    options
   })
 }

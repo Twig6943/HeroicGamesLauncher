@@ -366,9 +366,10 @@ interface AsyncIPCFunctions {
     dimensions?: string[]
   }) => Promise<Array<{ id: number; url: string; thumb: string }>>
   'exe_handler.launchWithExeFile': (
-    exePath: string,
+    target: string,
     appName: string,
-    runner: Runner
+    runner: Runner,
+    isUri: boolean
   ) => Promise<void>
 }
 
@@ -415,8 +416,9 @@ interface FrontendMessages {
   ) => void
 
   'exe_handler.showExeFilePicker': (
-    exePath: string,
-    flatpakInaccessible: boolean
+    target: string,
+    flatpakInaccessible: boolean,
+    isUri: boolean
   ) => void
 
   // Used inside tests, so we can be a bit lenient with the type checking here
